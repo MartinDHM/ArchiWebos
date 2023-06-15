@@ -191,8 +191,13 @@ footer nav ul {
 /* Filtre */
 
 .Filtreposition {
-	padding: 18px 10px 0px 24px;
+	padding: 8px 15px 8px 15px;
+    margin: 10px 10px 0 10px;
+    border: black 1px solid;
+    border-radius: 50px;
+    display: flex;
 }
+
 .Filtres {
 	display: flex;
     justify-content: center;

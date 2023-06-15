@@ -186,3 +186,14 @@ footer nav ul {
 	margin: 2em
 }
 
+/* Ajout fait par moi même*/
+
+/* Filtre */
+
+.Filtreposition {
+	padding: 18px 10px 0px 24px;
+}
+.Filtres {
+	display: flex;
+    justify-content: center;
+}

@@ -22,6 +22,45 @@ fetch('http://localhost:5678/api/works')
     afficherTableau(data);
     console.log(data[0]);
   })
+
+function afficherFiltre(data){
+
+  const Filtres = document.createElement("div")
+  Filtres.className = "Filtres"
+
+  const Tous = document.createElement("div")
+  Tous.innerText = "Tous"
+  Tous.className = "Filtreposition"
+
+  Filtres.appendChild(Tous)
+
+  for(i =0 ; i < data.length ; i++)
+  {
+    const projet = document.querySelector(".PortfolioTitle")
+
+
+    const filtreAjout = document.createElement("div")
+    filtreAjout.innerText = data[i].name
+    filtreAjout.className = "Filtreposition"
+    
+
+    projet.appendChild(Filtres)
+
+    Filtres.appendChild(filtreAjout)
+
+    
+  }
+
+}
+
+  fetch('http://localhost:5678/api/categories')
+  .then(response => response.json())
+  .then(data => {
+    afficherFiltre(data);
+    console.log(data);
+  })
+    
+  
   
   
   

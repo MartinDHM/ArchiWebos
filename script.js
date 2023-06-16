@@ -48,8 +48,25 @@ function filters (category){
     filterbtn.appendChild(filter);
   }
 
-}
+  const filterBtnEvent = document.querySelectorAll(".filterBtn button");
 
+filterBtnEvent.forEach(button => {
+  button.addEventListener("click", function() {
+    // Efface le contenu de la galerie
+    document.querySelector(".gallery").innerHTML = '';
+
+    // Filtrage des projets en fonction de la catégorie sélectionnée
+    let filteredData = data.filter((item) => {
+      return item.category.name === button.textContent || button.textContent === "Tous";
+    });
+
+    console.log(filteredData);
+
+    // Utilisation des projets filtrés pour afficher la galerie mise à jour
+    genererWorks(filteredData);
+  });
+});
+}
   
   
   

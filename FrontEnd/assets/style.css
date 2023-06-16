@@ -190,15 +190,27 @@ footer nav ul {
 
 /* Filtre */
 
-.Filtreposition {
-	padding: 8px 15px 8px 15px;
-    margin: 10px 10px 0 10px;
-    border: #1D6154 1px solid;
-    border-radius: 50px;
-    display: flex;
+.filtersBtn {
+    width: 100%;
+    text-align: center;
+    margin: 40px 0;
 }
 
-.Filtres {
-	display: flex;
-    justify-content: center;
+.filtersBtn>button {
+    height: 37px;
+    min-width: 100px;
+    color: #1D6154;
+    background-color: white;
+    border: 1px solid #1d6154;
+    border-radius: 60px;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 10px 15px;
+    margin: 6px;
+}
+
+.filtersBtn>button:focus {
+    color: white;
+    background-color: #1D6154;
+    transition: 300ms ease;
 }

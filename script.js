@@ -1,4 +1,13 @@
-function afficherTableau(data){
+/* recupération des données par l'api */
+fetch('http://localhost:5678/api/works')
+  .then(response => response.json())
+  .then(data => {
+    afficherGallery(data);
+    console.log(data[0]);
+  })
+
+/* fonction qui permet affiche la gallery*/
+function afficherGallery(data){
   for(i =0 ; i < data.length ; i++)
   {
     const gallery = document.querySelector('.gallery');
@@ -8,7 +17,7 @@ function afficherTableau(data){
     const imageElement = document.createElement("img");
     imageElement.src = data[i].imageUrl;
 
-    const nomElement = document.createElement("h2");
+    const nomElement = document.createElement("p");
     nomElement.innerText = data[i].title;
 
     gallery.appendChild(figure)
@@ -16,50 +25,31 @@ function afficherTableau(data){
     figure.appendChild(nomElement)
   }
 }
-fetch('http://localhost:5678/api/works')
-  .then(response => response.json())
-  .then(data => {
-    afficherTableau(data);
-    console.log(data[0]);
-  })
+/*recupération des catégorie des filtre de l'api */
+fetch('http://localhost:5678/api/categories')
+    .then(response => response.json())
+    .then(category => {
+      filters(category);
+      console.log(category[i]);
+    })
+    .catch(error => {
+      console.error('Une erreur s\'est produite', error);
+    });
+function filters (category){
 
-function afficherFiltre(data){
+  category.unshift({ name: "Tous" });
 
-  const Filtres = document.createElement("div")
-  Filtres.className = "Filtres"
-
-  const Tous = document.createElement("div")
-  Tous.innerText = "Tous"
-  Tous.className = "Filtreposition"
-
-  Filtres.appendChild(Tous)
-
-  for(i =0 ; i < data.length ; i++)
+  for(i = 0; i < category.length; i++)
   {
-    const projet = document.querySelector(".PortfolioTitle")
+    const filterbtn = document.querySelector(".filtersBtn")
+    const filter = document.createElement("button");
+    filter.innerText = category[i].name;
 
-
-    const filtreAjout = document.createElement("div")
-    filtreAjout.innerText = data[i].name
-    filtreAjout.className = "Filtreposition"
-    
-
-    projet.appendChild(Filtres)
-
-    Filtres.appendChild(filtreAjout)
-
-    
+    filterbtn.appendChild(filter);
   }
 
 }
 
-  fetch('http://localhost:5678/api/categories')
-  .then(response => response.json())
-  .then(data => {
-    afficherFiltre(data);
-    console.log(data);
-  })
-    
   
   
   

@@ -59,8 +59,10 @@ header {
 	margin: 50px 0
 }
 section {
-	margin: 50px 0
+	margin: 50px 27px;
+    width: 94%;
 }
+
 
 h1{
 	display: flex;
@@ -101,14 +103,16 @@ li:hover {
 #introduction {
 	display: flex;
 	align-items: center;
+	margin-top: -50px;
 }
 #introduction figure {
 	flex: 1
 }
 #introduction img {
 	display: block;
-	margin: auto;
-	width: 80%;
+    margin: auto;
+    width: 80%;
+    margin-top: 71px;
 }
 
 #introduction article {
@@ -189,6 +193,23 @@ footer nav ul {
 /* Ajout fait par moi même*/
 
 /* Filtre */
+footer {
+	background: white;
+}
+header {
+	background: #E5E5E5;
+	padding: 35px;
+	margin-top: 0;
+}
+
+main {
+	background: #E5E5E5;
+}
+
+a {
+	text-decoration: none;
+	color: black;
+}
 
 .filtersBtn {
     width: 100%;
@@ -213,4 +234,71 @@ footer nav ul {
     color: white;
     background-color: #1D6154;
     transition: 300ms ease;
+}
+
+.login {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	margin-top: -50px;
+	padding-bottom: 25%;
+}
+.titleLogin {
+	margin-top: 14%;
+}
+
+.email {
+    margin-top: 5%;
+	margin-bottom: 3%;
+    display: flex;
+    flex-direction: column;
+}
+label {
+    padding-bottom: 10px;
+}
+input#email {
+    width: 357px;
+    height: 51px;
+    top: 49%;
+    background: #FFFFFF;
+    box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	border: none;
+}
+.MDP {	
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+	flex-direction: column;	
+}
+input#mdp {
+    width: 357px;
+    height: 51px;
+    background: #FFFFFF;
+    box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	border: none;
+}
+
+.btnConnect {
+    width: 179px;
+    height: 36px;
+    background: #1D6154;
+    border-radius: 60px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 4%;
+}
+.titleBtn {	
+	font-family: Syne;
+	font-size: 14px;
+	font-weight: 700;
+	line-height: 17px;
+	letter-spacing: 0em;
+	text-align: center;
+}
+.mdpForgot {
+	margin-top: 2%;
+	border-bottom: solid black 1px;
 }

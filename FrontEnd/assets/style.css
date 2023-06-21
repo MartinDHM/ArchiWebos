@@ -323,7 +323,7 @@ input#mdp {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 4%;
+    margin-top: 9%;
 }
 .titleBtn {	
 	font-family: Syne;
@@ -334,6 +334,12 @@ input#mdp {
 	text-align: center;
 }
 .mdpForgot {
-	margin-top: 2%;
+	margin-top: 6%;
 	border-bottom: solid black 1px;
+}
+form.login-in {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }

@@ -229,6 +229,7 @@ input[type="submit"]{
 	width: 180px;
 	text-align: center;
 	border-radius: 60px ;
+	border: none;
 }
 
 footer nav ul {
@@ -290,7 +291,10 @@ a {
     flex-direction: column;
 }
 label {
-    padding-bottom: 10px;
+    padding-bottom: 18px;
+    margin-right: 0%;
+    width: 100%;
+    padding-top: 16px;
 }
 input#email {
     width: 357px;
@@ -334,7 +338,7 @@ input#mdp {
 	text-align: center;
 }
 .mdpForgot {
-	margin-top: 6%;
+	margin-top: 0%;
 	border-bottom: solid black 1px;
 }
 form.login-in {

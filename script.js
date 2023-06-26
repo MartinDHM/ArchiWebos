@@ -69,6 +69,9 @@ function filters (category){
       afficherGallery(filteredData);
     });
   });
+
+  /*modale*/
+  
 }
   
   

@@ -347,3 +347,23 @@ form.login-in {
     justify-content: center;
     align-items: center;
 }
+
+/* modale */
+
+.projetModal {
+	display: flex;
+    justify-content: center;
+    flex-direction: row;
+}
+.modif {
+    padding: 9px 15px 0px 45px;
+    display: flex;
+    flex-direction: row-reverse;
+}
+i.fa-regular.fa-pen-to-square {
+    padding-right: 10px;
+}
+button.btnModif {
+    background: white;
+    border: none;
+}

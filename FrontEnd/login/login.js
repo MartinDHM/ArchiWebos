@@ -19,7 +19,7 @@ async function login() {
           body: JSON.stringify(logData),
         });
 
-        // On vérifie si la requête a réussi
+        // On vérifie si la requête a réussi avec les conditions
         if (response.ok) {
           const token = await response.json();
           // On stocke le token récupéré dans le sessionStorage
@@ -27,11 +27,11 @@ async function login() {
           // On redirige vers la page d'accueil
           window.location.href = "../index.html";
         } else {
-          // Afficher un message d'erreur en cas d'échec
+          // Affiche un message d'erreur en cas d'échec
           error.textContent = "Nom d'utilisateur ou mot de passe incorrect";
         }
       } catch (error) {
-        // Afficher une alerte en cas de problème de connexion au serveur
+        // En cas de problème connexion serveur
         alert("Problème de connexion au serveur");
       }
     });

@@ -394,9 +394,40 @@ button.modif {
 .modification {
     display: flex;
 }
+.modification1 {
+    display: flex;
+	margin: 6px 0px 0px 33px;
+}
+.modification2 {
+    display: flex;
+	margin-left: -23px;
+}
 .logoutBtn {
 	display: none;
 }
 .loginIn {
 	display: block;
+}
+
+.Edition {
+    background: black;
+    height: 50px;
+    width: 100%;
+    display: none;
+}
+button.editionBtn {
+    color: white;
+    background: black;
+    border: none;
+    margin-right: 16px;
+}
+button.publierBtn {
+    background: white;
+    border-radius: 50px;
+    height: 37px;
+    width: 13rem;
+}
+
+i.fa-solid.fa-pen-to-square {
+    color: white;
 }

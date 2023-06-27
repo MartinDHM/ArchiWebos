@@ -70,40 +70,69 @@ function filters (category){
     });
   });
 
-  // fonction pour savoir si l'utilisateur est connecter ou non
-  function checkConnection() {
-    // Récupération du token depuis le sessionStorage
-    const token = sessionStorage.getItem("token");
-    // Ajout du bouton deconnexion
-    const logoutBtn = document.querySelector(".logoutBtn");
-    const loginIn = document.querySelector(".loginIn");
 
-    if (token) {
-      // Connecté
-      console.log("Connecté");
-      
-      // Appeler les fonctions ou effectuer les actions appropriées pour l'utilisateur connecté
-      logoutBtn.style.display = "block";
-      loginIn.style.display = "none";
-
-      logoutBtn.addEventListener("click", function() {
-        // Retirer le token du sessionStorage
-        sessionStorage.removeItem("token");
-        console.log("Déconnexion réussie");
+  // fonction pour savoir si l'utilisateur est connecté ou non et les modification sur la page
+function checkConnection() {
   
-      });
-      
-
-    } else {
-      // Non connecté
-      console.log("Non connecté");
-      
+  // Récupération du token depuis le sessionStorage
+  const token = sessionStorage.getItem("token");
   
-      // Appeler les fonctions ou effectuer les actions appropriées pour l'utilisateur non connecté
-    }
+  // Ajout des élement a modifié lors de la connexion
+  const logoutBtn = document.querySelector(".logoutBtn");
+  const loginIn = document.querySelector(".loginIn");
+  const modif = document.querySelectorAll(".modif");
+  const iconModif = document.querySelectorAll(".iconModif");
+  const modificationIcon = document.querySelectorAll(".iconModification");
+  const edition = document.querySelector(".Edition")
+  const editionMode = document.createElement("button")
+  editionMode.className = "editionBtn"
+  editionMode.innerText = "Mode Edition"
+  const publier = document.createElement("button")
+  publier.className = "publierBtn"
+  publier.innerText = "publier les changements"
+
+  if (token) {
+    // Connecté
+    console.log("Connecté");
+
+    // Appeler les fonctions ou effectuer les actions appropriées pour l'utilisateur connecté
+    
+    // Mode edition
+    edition.style.display = "flex";
+    edition.style.justifyContent = "center";
+    edition.style.alignItems = "center";
+    edition.appendChild(editionMode)
+    edition.appendChild(publier)
+    modificationIcon.forEach((element) => {
+      element.className = "fa-solid fa-pen-to-square";
+    });
+    
+    logoutBtn.style.display = "block";
+    loginIn.style.display = "none";
+    modif.forEach((element) => {
+      element.innerHTML = "modifier";
+    });
+    iconModif.forEach((element) => {
+      element.className = "fa-regular fa-pen-to-square";
+    });
+
+
+    logoutBtn.addEventListener("click", function() {
+      // Retirer le token du sessionStorage
+      sessionStorage.removeItem("token");
+      console.log("Déconnexion réussie");
+    });
+  } else {
+    // Non connecté
+    console.log("Non connecté");
+
+    
   }
-  checkConnection();
 }
-  
+
+checkConnection();
+
+} 
+
   
 

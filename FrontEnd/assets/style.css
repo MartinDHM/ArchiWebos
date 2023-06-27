@@ -352,18 +352,51 @@ form.login-in {
 
 .projetModal {
 	display: flex;
-    justify-content: center;
-    flex-direction: row;
+	justify-content: center;
+	align-items: center;
 }
-.modif {
-    padding: 9px 15px 0px 45px;
-    display: flex;
-    flex-direction: row-reverse;
+.modal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.8);
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
-i.fa-regular.fa-pen-to-square {
-    padding-right: 10px;
+.modal-wrapper {
+	background-color: white;
+	width: 630px;
+	max-width: calc(100vw - 20px);
+	max-height: calc(100vh - 20px);
+	overflow: auto;
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
+	position: relative;
+	box-sizing: border-box;
+	border-radius: 10px;
+	
 }
-button.btnModif {
+.fa-regular, .far {
+    font-weight: 400;
+    padding: 0px 9px 27px 26px;
+}
+button.modif {
     background: white;
     border: none;
+    padding: 0px 0px 24px 0px;
+    font-size: 13px;
+}
+.modification {
+    display: flex;
+}
+.logoutBtn {
+	display: none;
+}
+.loginIn {
+	display: block;
 }

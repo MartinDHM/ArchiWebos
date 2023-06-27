@@ -70,10 +70,40 @@ function filters (category){
     });
   });
 
-  /*modale*/
+  // fonction pour savoir si l'utilisateur est connecter ou non
+  function checkConnection() {
+    // Récupération du token depuis le sessionStorage
+    const token = sessionStorage.getItem("token");
+    // Ajout du bouton deconnexion
+    const logoutBtn = document.querySelector(".logoutBtn");
+    const loginIn = document.querySelector(".loginIn");
+
+    if (token) {
+      // Connecté
+      console.log("Connecté");
+      
+      // Appeler les fonctions ou effectuer les actions appropriées pour l'utilisateur connecté
+      logoutBtn.style.display = "block";
+      loginIn.style.display = "none";
+
+      logoutBtn.addEventListener("click", function() {
+        // Retirer le token du sessionStorage
+        sessionStorage.removeItem("token");
+        console.log("Déconnexion réussie");
   
+      });
+      
+
+    } else {
+      // Non connecté
+      console.log("Non connecté");
+      
+  
+      // Appeler les fonctions ou effectuer les actions appropriées pour l'utilisateur non connecté
+    }
+  }
+  checkConnection();
 }
-  
   
   
 

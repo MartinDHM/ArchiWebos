@@ -28,7 +28,8 @@
         <ul>
           <li>projets</li>
           <li>contact</li>
-          <a href="./login/login.html"><li>login</li></a>
+          <a href="./login/login.html"><li class="loginIn">login</li></a>
+          <a href="./index.html"><li class="logoutBtn">logout</li></a>
           <li><img src="./assets/icons/instagram.png" alt="Instagram" /></li>
         </ul>
       </nav>
@@ -60,18 +61,13 @@
       <section id="portfolio">
         <div class="projetModal">
           <h2 class="PortfolioTitle">Mes Projets</h2>
-          <div
-            id="myModal"
-            class="modal"
-            aria-hidden="true"
-            style="display: none"
-          >
-            <div class="modif">
-              <button class="btnModif">modifier</button>
-              <i class="fa-regular fa-pen-to-square"></i>
-            </div>
-            <div class="modal-content"></div>
+          <div class="modification">
+            <i class="fa-regular fa-pen-to-square"></i>
+            <button class="modif">modifier</button>
           </div>
+          <aside id="modalId" class="modal" style="display: none">
+            <div class="modal-wrapper"></div>
+          </aside>
         </div>
         <div class="filtersBtn"></div>
 

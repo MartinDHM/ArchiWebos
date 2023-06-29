@@ -1,7 +1,6 @@
-
 let worksData, categoriesData;
 
-/* recupération des données de l'Api */
+/* Récupération des données de l'API */
 fetch('http://localhost:5678/api/works')
   .then(response => response.json())
   .then(data => {
@@ -15,16 +14,15 @@ fetch('http://localhost:5678/api/works')
     categoriesData = category;
     filters(category);
     console.log(category[0]);
-  })
- 
+  });
 
-/* fonction qui permet affiche la gallery */
-function afficherGallery(data){
-  for(i =0 ; i < data.length ; i++)
-  {
-    const gallery = document.querySelector('.gallery');
+/* Fonction qui permet d'afficher la galerie */
+function afficherGallery(data) {
+  const gallery = document.querySelector('.gallery');
 
-    const figures  = document.createElement("figure");
+  for (let i = 0; i < data.length; i++) {
+    const figure = document.createElement("figure");
+    figure.id = `image-${data[i].id}`;
 
     const imageElement = document.createElement("img");
     imageElement.src = data[i].imageUrl;
@@ -32,29 +30,29 @@ function afficherGallery(data){
     const nomElement = document.createElement("p");
     nomElement.innerText = data[i].title;
 
-    gallery.appendChild(figures);
-    figures.appendChild(imageElement);
-    figures.appendChild(nomElement);
+    figure.appendChild(imageElement);
+    figure.appendChild(nomElement);
+    gallery.appendChild(figure);
   }
 }
-/* fonction qui affiche les filtres */
-function filters (category){
+
+/* Fonction qui affiche les filtres */
+function filters(category) {
   category.unshift({ name: "Tous" });
 
-  for(i = 0; i < category.length; i++)
-  {
-    const filterbtn = document.querySelector(".filtersBtn");
+  const filterBtn = document.querySelector(".filtersBtn");
+
+  for (let i = 0; i < category.length; i++) {
     const filter = document.createElement("button");
     filter.innerText = category[i].name;
-
-    filterbtn.appendChild(filter);
+    filterBtn.appendChild(filter);
   }
 
-  /* Ajout des evenements sur les filtres */
+  /* Ajout des événements sur les filtres */
   const filterBtnEvent = document.querySelectorAll(".filtersBtn button");
 
   filterBtnEvent.forEach(button => {
-    button.addEventListener("click", function() {
+    button.addEventListener("click", function () {
       // Efface le contenu de la galerie
       document.querySelector(".gallery").innerHTML = '';
 
@@ -69,77 +67,73 @@ function filters (category){
       afficherGallery(filteredData);
     });
   });
+}
 
-
-  // fonction pour savoir si l'utilisateur est connecté ou non et les modification sur la page
+// Fonction pour savoir si l'utilisateur est connecté ou non et effectuer les modifications sur la page
 function checkConnection() {
-  
   // Récupération du token depuis le sessionStorage
   const token = sessionStorage.getItem("token");
-  
-  // Ajout des élement a modifié lors de la connexion
+
+  // Ajout des éléments à modifier lors de la connexion
   const logoutBtn = document.querySelector(".logoutBtn");
   const loginIn = document.querySelector(".loginIn");
   const modif = document.querySelectorAll(".modif");
   const modif1 = document.querySelector(".modif1");
   const iconModif = document.querySelectorAll(".iconModif");
   const modificationIcon = document.querySelectorAll(".iconModification");
-  const edition = document.querySelector(".Edition")
-  const editionMode = document.createElement("button")
-  editionMode.className = "editionBtn"
-  editionMode.innerText = "Mode Edition"
-  const publier = document.createElement("button")
-  publier.className = "publierBtn"
-  publier.innerText = "publier les changements"
+  const edition = document.querySelector(".Edition");
+  const editionMode = document.createElement("button");
+  editionMode.className = "editionBtn";
+  editionMode.innerText = "Mode Edition";
+  const publier = document.createElement("button");
+  publier.className = "publierBtn";
+  publier.innerText = "Publier les changements";
 
   if (token) {
     // Connecté
     console.log("Connecté");
 
     // Appeler les fonctions ou effectuer les actions appropriées pour l'utilisateur connecté
-    
+
     // Mode édition
-edition.style.display = "flex";
-edition.style.justifyContent = "center";
-edition.style.alignItems = "center";
-edition.appendChild(editionMode);
-edition.appendChild(publier);
-modificationIcon.forEach((element) => {
-  element.className = "fas fa-pen-square";
-});
+    edition.style.display = "flex";
+    edition.style.justifyContent = "center";
+    edition.style.alignItems = "center";
+    edition.appendChild(editionMode);
+    edition.appendChild(publier);
+    modificationIcon.forEach((element) => {
+      element.className = "fas fa-pen-square";
+    });
 
-logoutBtn.style.display = "block";
-loginIn.style.display = "none";
-modif.forEach((element) => {
-  element.innerHTML = "modifier";
-});
-iconModif.forEach((element) => {
-  element.className = "fa-regular fa-pen-to-square";
-});
-modif1.innerHTML = "modifier";
+    logoutBtn.style.display = "block";
+    loginIn.style.display = "none";
+    modif.forEach((element) => {
+      element.innerHTML = "modifier";
+    });
+    iconModif.forEach((element) => {
+      element.className = "fa-regular fa-pen-to-square";
+    });
+    modif1.innerHTML = "modifier";
 
-logoutBtn.addEventListener("click", function() {
-  // Retirer le token du sessionStorage
-  sessionStorage.removeItem("token");
-  console.log("Déconnexion réussie");
-});
+    logoutBtn.addEventListener("click", function () {
+      // Retirer le token du sessionStorage
+      sessionStorage.removeItem("token");
+      console.log("Déconnexion réussie");
+    });
   } else {
     // Non connecté
     console.log("Non connecté");
-
-    
   }
 }
 
 checkConnection();
-
 
 const modalWrapper = document.querySelector(".modal-wrapper");
 const openModalLink = document.querySelector(".modif1");
 let galleryAdded = false; // Variable pour suivre l'état de la galerie
 let cross = null; // Variable pour stocker la référence à la croix
 
-// lorsque l'on appuie sur le bouton "modifier", on affiche le modal
+// Lorsque l'on appuie sur le bouton "modifier", on affiche le modal
 openModalLink.addEventListener("click", () => {
   if (!galleryAdded) { // Vérifier si la galerie n'a pas déjà été ajoutée
 
@@ -184,7 +178,7 @@ openModalLink.addEventListener("click", () => {
 
       const modalTrashIcon = document.createElement("i"); // Nouvel élément pour l'icône de corbeille
       modalTrashIcon.classList.add("modal-trash-icon"); // Ajoutez une classe pour styliser l'icône
-      modalTrashIcon.classList.add("fa-solid" ,"fa-trash-can"); // Ajoutez des classes supplémentaires pour utiliser une icône de la bibliothèque Font Awesome (facultatif)
+      modalTrashIcon.classList.add("fa-solid", "fa-trash-can"); // Ajoutez des classes supplémentaires pour utiliser une icône de la bibliothèque Font Awesome (facultatif)
 
       const modalPhotoTitle = document.createElement("h4");
       modalPhotoTitle.textContent = worksData[i].title;
@@ -195,7 +189,20 @@ openModalLink.addEventListener("click", () => {
       modalPhoto.appendChild(modalPhotoTitle);
       modalPhotoCtn.appendChild(modalPhoto);
 
-      
+      modalTrashIcon.addEventListener("click", () => {
+        const imageId = worksData[i].id; // Récupérer l'ID de l'image
+        const galleryImages = document.querySelectorAll(".gallery figure"); // Sélectionner toutes les figures/images de la galerie
+
+        // Parcourir toutes les images et supprimer celle avec l'ID correspondant
+        galleryImages.forEach((image) => {
+          if (image.id === `image-${imageId}`) {
+            image.remove(); // Supprimer l'image de la galerie
+          }
+        });
+
+        // Supprimer également l'image du modal
+        modalPhoto.remove();
+      });
     }
 
     galleryAdded = true; // Marquer la galerie comme ajoutée
@@ -204,17 +211,3 @@ openModalLink.addEventListener("click", () => {
   const modalVisibility = document.getElementById('modalId');
   modalVisibility.classList.remove("modalVisibility");
 });
-
-
-
-
-}
-
-
-
-
-
-
-
-  
-

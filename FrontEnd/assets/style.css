@@ -431,3 +431,77 @@ button.publierBtn {
 i.fa-solid.fa-pen-to-square {
     color: white;
 }
+
+button.modif1 {
+    background: white;
+    border: none;
+    padding: 0px 0px 24px 0px;
+    font-size: 13px;
+}
+.modalVisibility {
+ display: none;
+}
+
+i.cross.fas.fa-times {
+	display: flex;
+	justify-content: flex-end;
+}
+.modal-wrapper h3 {
+    text-align: center;
+    font-size: 26px;
+    margin-top: 60px;
+}
+.border {
+    width: 75%;
+    margin: auto;
+    border-bottom: solid 1px black;
+    margin-top: 40px;
+}
+.addButton {
+    text-align: center;
+    background-color: #1D6154;
+    color: white;
+    font-size: 14px;
+    font-family: "syne";
+    border-radius: 60px;
+    border: none;
+    margin: auto;
+    margin-top: 36px;
+    width: 40%;
+    height: 36px;
+    cursor: pointer;
+}
+.removeButton {
+    border: none;
+    font-family: "syne";
+    background-color: white;
+    color: #d65353;
+    margin: 24px;
+    cursor: pointer;
+}
+.modal-image {
+	width: 80px;
+	height: 100px; 
+	display: block;
+	padding: 10px;
+  }
+  .photo-ctn {
+    display: flex;
+    flex-wrap: wrap;
+	justify-content: center;
+}
+h4.modal-title {
+    width: 78px;
+	padding-left: 10px;
+}
+i.modal-trash-icon.fa-solid.fa-trash-can {
+    position: absolute;
+    margin: -100px 0px 0px 67px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    background-color: black;
+    width: 18px;
+    height: 24px;
+}

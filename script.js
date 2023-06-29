@@ -81,6 +81,7 @@ function checkConnection() {
   const logoutBtn = document.querySelector(".logoutBtn");
   const loginIn = document.querySelector(".loginIn");
   const modif = document.querySelectorAll(".modif");
+  const modif1 = document.querySelector(".modif1");
   const iconModif = document.querySelectorAll(".iconModif");
   const modificationIcon = document.querySelectorAll(".iconModification");
   const edition = document.querySelector(".Edition")
@@ -97,31 +98,31 @@ function checkConnection() {
 
     // Appeler les fonctions ou effectuer les actions appropriées pour l'utilisateur connecté
     
-    // Mode edition
-    edition.style.display = "flex";
-    edition.style.justifyContent = "center";
-    edition.style.alignItems = "center";
-    edition.appendChild(editionMode)
-    edition.appendChild(publier)
-    modificationIcon.forEach((element) => {
-      element.className = "fa-solid fa-pen-to-square";
-    });
-    
-    logoutBtn.style.display = "block";
-    loginIn.style.display = "none";
-    modif.forEach((element) => {
-      element.innerHTML = "modifier";
-    });
-    iconModif.forEach((element) => {
-      element.className = "fa-regular fa-pen-to-square";
-    });
+    // Mode édition
+edition.style.display = "flex";
+edition.style.justifyContent = "center";
+edition.style.alignItems = "center";
+edition.appendChild(editionMode);
+edition.appendChild(publier);
+modificationIcon.forEach((element) => {
+  element.className = "fas fa-pen-square";
+});
 
+logoutBtn.style.display = "block";
+loginIn.style.display = "none";
+modif.forEach((element) => {
+  element.innerHTML = "modifier";
+});
+iconModif.forEach((element) => {
+  element.className = "fa-regular fa-pen-to-square";
+});
+modif1.innerHTML = "modifier";
 
-    logoutBtn.addEventListener("click", function() {
-      // Retirer le token du sessionStorage
-      sessionStorage.removeItem("token");
-      console.log("Déconnexion réussie");
-    });
+logoutBtn.addEventListener("click", function() {
+  // Retirer le token du sessionStorage
+  sessionStorage.removeItem("token");
+  console.log("Déconnexion réussie");
+});
   } else {
     // Non connecté
     console.log("Non connecté");
@@ -132,7 +133,88 @@ function checkConnection() {
 
 checkConnection();
 
-} 
+
+const modalWrapper = document.querySelector(".modal-wrapper");
+const openModalLink = document.querySelector(".modif1");
+let galleryAdded = false; // Variable pour suivre l'état de la galerie
+let cross = null; // Variable pour stocker la référence à la croix
+
+// lorsque l'on appuie sur le bouton "modifier", on affiche le modal
+openModalLink.addEventListener("click", () => {
+  if (!galleryAdded) { // Vérifier si la galerie n'a pas déjà été ajoutée
+
+    cross = document.createElement("i");
+    cross.className = "cross fas fa-times";
+
+    cross.addEventListener("click", (event) => {
+      event.stopPropagation(); // Empêcher la propagation de l'événement de clic
+
+      const closeModalLink = document.getElementById('modalId');
+      closeModalLink.classList.add("modalVisibility");
+    });
+
+    const modalAddTitle = document.createElement("h3");
+    modalAddTitle.textContent = "Galerie photo";
+    const modalPhotoCtn = document.createElement("div");
+    modalPhotoCtn.classList.add("photo-ctn");
+    const modalBorder = document.createElement("div");
+    modalBorder.classList.add("border");
+    const modalAddButton = document.createElement("button");
+    modalAddButton.classList.add("addButton");
+    modalAddButton.textContent = "Ajouter une photo";
+    const modalRemoveButton = document.createElement("button");
+    modalRemoveButton.classList.add("removeButton");
+    modalRemoveButton.textContent = "Supprimer la galerie";
+
+    modalWrapper.appendChild(cross);
+    modalWrapper.appendChild(modalAddTitle);
+    modalWrapper.appendChild(modalPhotoCtn);
+    modalWrapper.appendChild(modalBorder);
+    modalWrapper.appendChild(modalAddButton);
+    modalWrapper.appendChild(modalRemoveButton);
+
+    // Ajouter les "works" dans la galerie du modal
+    for (let i = 0; i < worksData.length; i++) {
+      const modalPhoto = document.createElement("div");
+      modalPhoto.classList.add("modal-photo");
+
+      const modalPhotoImage = document.createElement("img");
+      modalPhotoImage.src = worksData[i].imageUrl;
+      modalPhotoImage.classList.add("modal-image");
+
+      const modalTrashIcon = document.createElement("i"); // Nouvel élément pour l'icône de corbeille
+      modalTrashIcon.classList.add("modal-trash-icon"); // Ajoutez une classe pour styliser l'icône
+      modalTrashIcon.classList.add("fa-solid" ,"fa-trash-can"); // Ajoutez des classes supplémentaires pour utiliser une icône de la bibliothèque Font Awesome (facultatif)
+
+      const modalPhotoTitle = document.createElement("h4");
+      modalPhotoTitle.textContent = worksData[i].title;
+      modalPhotoTitle.classList.add("modal-title");
+
+      modalPhoto.appendChild(modalPhotoImage);
+      modalPhoto.appendChild(modalTrashIcon); // Ajoutez l'icône de corbeille après l'image
+      modalPhoto.appendChild(modalPhotoTitle);
+      modalPhotoCtn.appendChild(modalPhoto);
+
+      
+    }
+
+    galleryAdded = true; // Marquer la galerie comme ajoutée
+  }
+
+  const modalVisibility = document.getElementById('modalId');
+  modalVisibility.classList.remove("modalVisibility");
+});
+
+
+
+
+}
+
+
+
+
+
+
 
   
 

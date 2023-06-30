@@ -230,6 +230,9 @@ input[type="submit"]{
 	text-align: center;
 	border-radius: 60px ;
 	border: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 footer nav ul {
@@ -450,6 +453,7 @@ i.cross.fas.fa-times {
     text-align: center;
     font-size: 26px;
     margin-top: 60px;
+	margin-bottom: 20px;
 }
 .border {
     width: 75%;
@@ -504,4 +508,74 @@ i.modal-trash-icon.fa-solid.fa-trash-can {
     background-color: black;
     width: 18px;
     height: 24px;
+}
+i.modal-up-down-left-right-icon.fa-solid.fa-up-down-left-right {
+    position: absolute;
+    margin: -100px 0px 0px 42px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    background-color: black;
+    width: 18px;
+    height: 24px;
+}
+i.fa-solid.fa-times.close-button {
+    display: flex;
+    justify-content: flex-end;
+}
+i.fa-solid.fa-arrow-left {
+    position: absolute;
+}
+.addBox {
+    background-color: #E8F1F6;
+    border-radius: 3px;
+    height: 170px;
+    width: 75%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+.addBox p {
+    font-size: 10px;
+    margin-top: 4px;
+}
+.inputFileBtn {
+    opacity: 0;
+    position: absolute;
+    bottom: 40px;
+    cursor: pointer;
+    height: 36px;
+}
+#Title, #category {
+    width: 100%;
+    box-sizing: border-box;
+    height: 50px;
+    box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+    border: none;
+    padding-left: 20px;
+}
+.fa-image {
+    margin: 20px 20px 0px 0px;
+    font-size: 56px;
+    color: rgb(189, 187, 187);
+    background-color: #E8F1F6;
+}
+.inputFileBtn {
+    opacity: 0;
+    position: absolute;
+    bottom: 40px;
+    cursor: pointer;
+    height: 36px;
+}
+button.addImgButton {
+    background: #aad3e9;
+    border: none;
+    border-radius: 50px;
+}
+img#photoPreview {
+    position: absolute;
+    height: 170px;
 }

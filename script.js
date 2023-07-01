@@ -1,5 +1,6 @@
 let categoriesData, modalPhotoCtn, modalPhoto, inputFileBtn, formSubmitButton, inputTitle, selectCategory, modalWrapper;
 let worksData;
+let token;
 
 let isModalDisplay = false; //Booleen permettant de gérer l'affichage sur la page du modal (true = affiché, false = caché)
 let galleryAdded = false; //
@@ -83,8 +84,7 @@ function filters(category) {
 // Fonction pour savoir si l'utilisateur est connecté ou non et effectuer les modifications sur la page
 function checkConnection() {
   // Récupération du token depuis le sessionStorage
-  const token = sessionStorage.getItem("token");
-
+  token = sessionStorage.getItem("token");
   // Ajout des éléments à modifier lors de la connexion
   const logoutBtn = document.querySelector(".logoutBtn");
   const loginIn = document.querySelector(".loginIn");
@@ -198,7 +198,9 @@ function createModal(workData) {
       modalPhoto.appendChild(modalPhotoTitle);
       modalPhotoCtn.appendChild(modalPhoto);
       // Lorsque l'on appuie sur le bouton "modifier", on affiche le modal
-      modalTrashIcon.addEventListener("click",deleteModale)
+      modalTrashIcon.addEventListener("click", function(){
+        deleteModale(worksData[i].id);
+      })
       const modalAddButton = document.querySelector(".addButton");
       modalAddButton.addEventListener("click", createAddModal) 
     }
@@ -220,8 +222,9 @@ function afficherModal(){
   
 }
 
-async function deleteModale() {  
-  const response = await fetch(`http://localhost:5678/api/works/${photoId}`, {
+async function deleteModale(id) {  
+  token = JSON.parse(sessionStorage.getItem("token"));
+  const response = await fetch(`http://localhost:5678/api/works/${id}`, {
       method: "DELETE",
       headers: {
         "Accept": "*/*",
@@ -232,7 +235,7 @@ async function deleteModale() {
     // Supprimer l'image du DOM
     modalPhotoCtn.removeChild(modalPhoto);
     // Mettre à jour les données côté serveur
-    const deleteResponse = await fetch(`http://localhost:5678/api/works/${photoId}`, {
+    const deleteResponse = await fetch(`http://localhost:5678/api/works/${id}`, {
       method: "DELETE",
       headers: {
         "Authorization": `Bearer ${token.token}`
@@ -397,10 +400,26 @@ async function postNewWork(inputFileBtn, inputTitle, selectCategory) {
   const newWorkImg = inputFileBtn.files[0];
   const newWorkTitle = inputTitle.value;
   const newWorkCategory = selectCategory.value;
-  const token = JSON.parse(sessionStorage.getItem("token"));
+  token = JSON.parse(sessionStorage.getItem("token"));
 
   formData.append("image", newWorkImg);
   formData.append("title", newWorkTitle);
   formData.append("category", newWorkCategory);
+  
+  const response = await fetch("http://localhost:5678/api/works", {
+    method: "POST",
+    headers: {
+        "accept": "application/json",
+        "Authorization": `Bearer ${token.token}`,
+    },
+    body: formData
+    })
+    if (response.ok) {
+        createModal();
+        const works = await fetchAPIData();
+    }
+  } 
+  
 
-}
+
+

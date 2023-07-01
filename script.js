@@ -106,7 +106,7 @@ function checkConnection() {
 
     // Appeler les fonctions ou effectuer les actions appropriées pour l'utilisateur connecté
 
-    // Mode édition
+    // Mode édition :
     edition.style.display = "flex";
     edition.style.justifyContent = "center";
     edition.style.alignItems = "center";
@@ -200,6 +200,7 @@ function createModal(workData) {
       // Lorsque l'on appuie sur le bouton "modifier", on affiche le modal
       modalTrashIcon.addEventListener("click", function(){
         deleteModale(worksData[i].id);
+        event.preventDefault();
       })
       const modalAddButton = document.querySelector(".addButton");
       modalAddButton.addEventListener("click", createAddModal) 

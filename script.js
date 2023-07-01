@@ -1,25 +1,36 @@
 let categoriesData, modalPhotoCtn, modalPhoto, inputFileBtn, formSubmitButton, inputTitle, selectCategory, modalWrapper;
 let worksData;
-let token;
 
 let isModalDisplay = false; //Booleen permettant de gérer l'affichage sur la page du modal (true = affiché, false = caché)
 let galleryAdded = false; //
 
-async function fetchAPIData(){
+async function init(){
   /* Récupération des données de l'API */
   const responseWorks = await fetch('http://localhost:5678/api/works');
   const works = await responseWorks.json();
   worksData = works; 
   afficherGallery(worksData);
-  createModal(worksData);
+  createModal();
   const responseCategories = await fetch('http://localhost:5678/api/categories');
   const categories = await responseCategories.json();
   categoriesData = categories;
   filters(categoriesData);
   }
 
-fetchAPIData()
+init()
 
+async function loadWorks(){
+  /* Récupération des données de l'API */
+  const responseWorks = fetch('http://localhost:5678/api/works');
+  responseWorks.then(reponse => {
+    return reponse.json();
+  })
+  .then(json => {
+    worksData = json;
+    afficherGallery(worksData);
+    displayDefaultModal();
+  })
+}
 
 
 const openModalLink = document.querySelector(".modif1");
@@ -84,7 +95,8 @@ function filters(category) {
 // Fonction pour savoir si l'utilisateur est connecté ou non et effectuer les modifications sur la page
 function checkConnection() {
   // Récupération du token depuis le sessionStorage
-  token = sessionStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
+
   // Ajout des éléments à modifier lors de la connexion
   const logoutBtn = document.querySelector(".logoutBtn");
   const loginIn = document.querySelector(".loginIn");
@@ -106,7 +118,7 @@ function checkConnection() {
 
     // Appeler les fonctions ou effectuer les actions appropriées pour l'utilisateur connecté
 
-    // Mode édition :
+    // Mode édition
     edition.style.display = "flex";
     edition.style.justifyContent = "center";
     edition.style.alignItems = "center";
@@ -137,9 +149,9 @@ function checkConnection() {
   }
 }
 
-function createModal(workData) {
+function createModal() {
   modalWrapper = document.querySelector(".modal-wrapper");
-  modalWrapper.innerHTML="";
+  modalWrapper.innerHTML = "";
   if (!galleryAdded) { // Vérifier si la galerie n'a pas déjà été ajoutée
     let cross = document.createElement("i");
     cross.className = "cross fas fa-times";
@@ -156,7 +168,7 @@ function createModal(workData) {
     modalPhotoCtn.classList.add("photo-ctn");
     const modalBorder = document.createElement("div");
     modalBorder.classList.add("border");
-    const modalAddButton = document.createElement("button");
+    let modalAddButton = document.createElement("button");
     modalAddButton.classList.add("addButton");
     modalAddButton.textContent = "Ajouter une photo";
     const modalRemoveButton = document.createElement("button");
@@ -170,43 +182,50 @@ function createModal(workData) {
     modalWrapper.appendChild(modalAddButton);
     modalWrapper.appendChild(modalRemoveButton);
 
-    // Ajouter les "works" dans la galerie du modal
-    for (let i = 0; i < worksData.length; i++) {
-      modalPhoto = document.createElement("div");
-      modalPhoto.classList.add("modal-photo");
-      modalPhoto.id = `image-${worksData[i].id}`; // Ajouter un ID unique à chaque image
+    modalAddButton = document.querySelector(".addButton");
+    modalAddButton.addEventListener("click", createAddModal) 
 
-      const modalPhotoImage = document.createElement("img");
-      modalPhotoImage.src = worksData[i].imageUrl;
-      modalPhotoImage.classList.add("modal-image");
-
-      const modalTrashIcon = document.createElement("i"); // Nouvel élément pour l'icône de corbeille
-      modalTrashIcon.classList.add("modal-trash-icon"); // Ajoutez une classe pour styliser l'icône
-      modalTrashIcon.classList.add("fa-solid", "fa-trash-can"); // Ajoutez des classes supplémentaires pour utiliser une icône de la bibliothèque Font Awesome (facultatif)
-
-      const modalUpDownLeftRightIcon = document.createElement("i"); // Nouvel élément pour l'icône up-down-left-right
-      modalUpDownLeftRightIcon.classList.add("modal-up-down-left-right-icon"); // Ajoutez une classe pour styliser l'icône
-      modalUpDownLeftRightIcon.classList.add("fa-solid", "fa-up-down-left-right"); // Ajoutez des classes supplémentaires pour utiliser une icône de la bibliothèque Font Awesome
-
-      const modalPhotoTitle = document.createElement("h4");
-      modalPhotoTitle.textContent = worksData[i].title;
-      modalPhotoTitle.classList.add("modal-title");
-
-      modalPhoto.appendChild(modalPhotoImage);
-      modalPhoto.appendChild(modalTrashIcon); // Ajoutez l'icône de corbeille après l'image
-      modalPhoto.appendChild(modalUpDownLeftRightIcon); // Ajoutez l'icône up-down-left-right après l'icône de corbeille
-      modalPhoto.appendChild(modalPhotoTitle);
-      modalPhotoCtn.appendChild(modalPhoto);
-      // Lorsque l'on appuie sur le bouton "modifier", on affiche le modal
-      modalTrashIcon.addEventListener("click", function(){
-        deleteModale(worksData[i].id);
-        event.preventDefault();
-      })
-      const modalAddButton = document.querySelector(".addButton");
-      modalAddButton.addEventListener("click", createAddModal) 
-    }
-    galleryAdded = true;
+    galleryInModal();
   }
+}
+
+function galleryInModal(){
+  // Ajouter les "works" dans la galerie du modal
+  for (let i = 0; i < worksData.length; i++) {
+    modalPhoto = document.createElement("div");
+    modalPhoto.classList.add("modal-photo");
+    modalPhoto.id = `image-${worksData[i].id}`; // Ajouter un ID unique à chaque image
+
+    const modalPhotoImage = document.createElement("img");
+    modalPhotoImage.src = worksData[i].imageUrl;
+    modalPhotoImage.classList.add("modal-image");
+
+    const modalTrashIcon = document.createElement("i"); // Nouvel élément pour l'icône de corbeille
+    modalTrashIcon.classList.add("modal-trash-icon"); // Ajoutez une classe pour styliser l'icône
+    modalTrashIcon.classList.add("fa-solid", "fa-trash-can"); // Ajoutez des classes supplémentaires pour utiliser une icône de la bibliothèque Font Awesome (facultatif)
+
+    const modalUpDownLeftRightIcon = document.createElement("i"); // Nouvel élément pour l'icône up-down-left-right
+    modalUpDownLeftRightIcon.classList.add("modal-up-down-left-right-icon"); // Ajoutez une classe pour styliser l'icône
+    modalUpDownLeftRightIcon.classList.add("fa-solid", "fa-up-down-left-right"); // Ajoutez des classes supplémentaires pour utiliser une icône de la bibliothèque Font Awesome
+
+    const modalPhotoTitle = document.createElement("h4");
+    modalPhotoTitle.textContent = worksData[i].title;
+    modalPhotoTitle.classList.add("modal-title");
+
+    modalPhoto.appendChild(modalPhotoImage);
+    modalPhoto.appendChild(modalTrashIcon); // Ajoutez l'icône de corbeille après l'image
+    modalPhoto.appendChild(modalUpDownLeftRightIcon); // Ajoutez l'icône up-down-left-right après l'icône de corbeille
+    modalPhoto.appendChild(modalPhotoTitle);
+    modalPhotoCtn.appendChild(modalPhoto);
+    // Lorsque l'on appuie sur le bouton "modifier", on affiche le modal
+    modalTrashIcon.addEventListener("click", function(){
+      deleteModale(worksData[i].id);
+      createModal();
+      afficherModal();
+      event.preventDefault();
+    })
+  }
+  galleryAdded = true;
 }
 
 function afficherModal(){
@@ -248,9 +267,7 @@ async function deleteModale(id) {
       console.log("Erreur lors de la suppression de l'image côté serveur");
     }
     // Mettre à jour les données affichées
-    const works = await loadWorks();
-    displayWorksInModal(works);
-    displayWorks(works);    
+    worksData = await loadWorks();
   }
 }
   
@@ -347,11 +364,11 @@ function createAddModal(){
     
   closeButton.addEventListener("click", afficherModal)
 
-  iconeBack.addEventListener("click",backModal)
+  iconeBack.addEventListener("click",displayDefaultModal)
 
 }
 
-function backModal() {
+function displayDefaultModal() {
   isModalDisplay=true;
   afficherModal();
   isModalDisplay=false;
@@ -416,11 +433,7 @@ async function postNewWork(inputFileBtn, inputTitle, selectCategory) {
     body: formData
     })
     if (response.ok) {
-        createModal();
-        const works = await fetchAPIData();
+      worksData = await loadWorks();
     }
   } 
   
-
-
-

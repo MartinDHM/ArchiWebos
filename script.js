@@ -1,4 +1,4 @@
-let categoriesData, modalPhotoCtn, modalPhoto, inputFileBtn, formSubmitButton, inputTitle, selectCategory;
+let categoriesData, modalPhotoCtn, modalPhoto, inputFileBtn, formSubmitButton, inputTitle, selectCategory, modalWrapper;
 let worksData;
 
 let isModalDisplay = false; //Booleen permettant de gérer l'affichage sur la page du modal (true = affiché, false = caché)
@@ -138,7 +138,8 @@ function checkConnection() {
 }
 
 function createModal(workData) {
-  const modalWrapper = document.querySelector(".modal-wrapper");
+  modalWrapper = document.querySelector(".modal-wrapper");
+  modalWrapper.innerHTML="";
   if (!galleryAdded) { // Vérifier si la galerie n'a pas déjà été ajoutée
     let cross = document.createElement("i");
     cross.className = "cross fas fa-times";
@@ -339,6 +340,19 @@ function createAddModal(){
   inputTitle.addEventListener("input", validateForm);
   selectCategory.addEventListener("change", validateForm);
 
+    
+  closeButton.addEventListener("click", afficherModal)
+
+  iconeBack.addEventListener("click",backModal)
+
+}
+
+function backModal() {
+  isModalDisplay=true;
+  afficherModal();
+  isModalDisplay=false;
+  createModal();
+  afficherModal()
 }
 
 // Validation du formulaire

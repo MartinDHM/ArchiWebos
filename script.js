@@ -9,9 +9,8 @@ async function fetchAPIData(){
   const responseWorks = await fetch('http://localhost:5678/api/works');
   const works = await responseWorks.json();
   worksData = works; 
-  console.log(worksData)
   afficherGallery(worksData);
-
+  createModal(worksData);
   const responseCategories = await fetch('http://localhost:5678/api/categories');
   const categories = await responseCategories.json();
   categoriesData = categories;
@@ -19,13 +18,13 @@ async function fetchAPIData(){
   }
 
 fetchAPIData()
-createModal()
+
+
 
 const openModalLink = document.querySelector(".modif1");
-openModalLink.addEventListener("click", afficherModal())
+openModalLink.addEventListener("click", afficherModal)
 
 checkConnection();
-console.log(worksData);// Variable pour suivre l'état de la galerie
 
 /* Fonction qui permet d'afficher la galerie */
 function afficherGallery(data) {
@@ -138,16 +137,16 @@ function checkConnection() {
   }
 }
 
-function createModal() {
+function createModal(workData) {
   const modalWrapper = document.querySelector(".modal-wrapper");
   if (!galleryAdded) { // Vérifier si la galerie n'a pas déjà été ajoutée
     let cross = document.createElement("i");
     cross.className = "cross fas fa-times";
 
     cross.addEventListener("click", (event) => {
-      event.stopPropagation(); // Empêcher la propagation de l'événement de clic
       const closeModalLink = document.getElementById('modalId');
       afficherModal();
+      event.stopPropagation(); // Empêcher la propagation de l'événement de clic
     });
 
     const modalAddTitle = document.createElement("h3");
@@ -198,9 +197,9 @@ function createModal() {
       modalPhoto.appendChild(modalPhotoTitle);
       modalPhotoCtn.appendChild(modalPhoto);
       // Lorsque l'on appuie sur le bouton "modifier", on affiche le modal
-      modalTrashIcon.addEventListener("click",deleteModale())
+      modalTrashIcon.addEventListener("click",deleteModale)
       const modalAddButton = document.querySelector(".addButton");
-      modalAddButton.addEventListener("click", createAddModal()) 
+      modalAddButton.addEventListener("click", createAddModal) 
     }
     galleryAdded = true;
   }
@@ -209,12 +208,12 @@ function createModal() {
 function afficherModal(){
   if (isModalDisplay){
     const modalVisibility = document.getElementById('modalId');
-    modalVisibility.classList.add("modalVisibility");
+    modalVisibility.classList.add("modalInvisibility");
     isModalDisplay = false
     galleryAdded = false
   } else {
     const modalVisibility = document.getElementById('modalId');
-    modalVisibility.classList.remove("modalVisibility");
+    modalVisibility.classList.remove("modalInvisibility");
     isModalDisplay = true
   }
   
@@ -391,5 +390,3 @@ async function postNewWork(inputFileBtn, inputTitle, selectCategory) {
   formData.append("category", newWorkCategory);
 
 }
-
-

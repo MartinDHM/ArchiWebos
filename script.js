@@ -1,33 +1,41 @@
+/* initialisation des variables "globales" pouvant être utiliser dans tous le code */
 let categoriesData, modalPhotoCtn, modalPhoto, inputFileBtn, formSubmitButton, inputTitle, selectCategory, modalWrapper;
 let worksData;
-
 let isModalDisplay = false; //Booleen permettant de gérer l'affichage sur la page du modal (true = affiché, false = caché)
-let galleryAdded = false; //
 
 async function init(){
-  /* Récupération des données de l'API */
-  const responseWorks = await fetch('http://localhost:5678/api/works');
-  const works = await responseWorks.json();
-  worksData = works; 
-  afficherGallery(worksData);
-  createModal();
-  const responseCategories = await fetch('http://localhost:5678/api/categories');
-  const categories = await responseCategories.json();
-  categoriesData = categories;
-  filters(categoriesData);
-  }
+  /* Au lancement de la page : Récupération des works et des categories de l'API */
+  const responseWorks = fetch('http://localhost:5678/api/works');
+  responseWorks.then(reponse => {
+    return reponse.json();
+  })
+  .then(json => {
+    worksData = json
+    afficherGallery(worksData)
+    createModal() //Création du HTML du modal de base (non affiché)
+  })
+  const responseCategories = fetch('http://localhost:5678/api/categories');
+  responseCategories.then(reponse => {
+    return reponse.json();
+  })
+  .then(json => {
+    categoriesData = json;
+    filters(categoriesData) //Affichage des boutons pour filtrer les works
+  })
+}
 
 init()
 
+/* Fonction de récupérer les works et de les mettre à jour dans la galerie et le modal */
 async function loadWorks(){
   /* Récupération des données de l'API */
   const responseWorks = fetch('http://localhost:5678/api/works');
   responseWorks.then(reponse => {
     return reponse.json();
   })
-  .then(json => {
+  .then(json => {      // attente de la récupération des works mise à jour 
     worksData = json;
-    afficherGallery(worksData);
+    afficherGallery(worksData); // affiche de la galerie avec les nouveau works 
     displayDefaultModal();
   })
 }
@@ -81,12 +89,13 @@ function filters(category) {
     // Efface le contenu de la galerie
     document.querySelector(".gallery").innerHTML = '';
 
-    // Filtrage des projets en fonction de la catégorie sélectionnée
+    // Filtrage des works en fonction de la catégorie sélectionnée
+    // filter permet de garder les élements du tableau qui respecte la condition, le tableau filtré est stocké dans filteredData
     let filteredData = worksData.filter((item) => {
       return item.category.name === button.textContent || button.textContent === "Tous";
     });
 
-    // Utilisation des projets filtrés pour afficher la galerie mise à jour
+    // Utilisation des works filtrés pour afficher la galerie mise à jour
     afficherGallery(filteredData);
     });
   });
@@ -149,48 +158,44 @@ function checkConnection() {
   }
 }
 
+/* fonction permettant de creer le HTML du modal de base*/
 function createModal() {
   modalWrapper = document.querySelector(".modal-wrapper");
   modalWrapper.innerHTML = "";
-  if (!galleryAdded) { // Vérifier si la galerie n'a pas déjà été ajoutée
-    let cross = document.createElement("i");
-    cross.className = "cross fas fa-times";
+  let cross = document.createElement("i");
+  cross.className = "cross fas fa-times";
+  cross.addEventListener("click", (event) => {
+    afficherModal();
+    event.stopPropagation(); // Empêcher la propagation de l'événement de clic
+  });
+  const modalAddTitle = document.createElement("h3");
+  modalAddTitle.textContent = "Galerie photo";
+  modalPhotoCtn = document.createElement("div");
+  modalPhotoCtn.classList.add("photo-ctn");
+  const modalBorder = document.createElement("div");
+  modalBorder.classList.add("border");
+  let modalAddButton = document.createElement("button");
+  modalAddButton.classList.add("addButton");
+  modalAddButton.textContent = "Ajouter une photo";
+  const modalRemoveButton = document.createElement("button");
+  modalRemoveButton.classList.add("removeButton");
+  modalRemoveButton.textContent = "Supprimer la galerie";
 
-    cross.addEventListener("click", (event) => {
-      const closeModalLink = document.getElementById('modalId');
-      afficherModal();
-      event.stopPropagation(); // Empêcher la propagation de l'événement de clic
-    });
+  modalWrapper.appendChild(cross);
+  modalWrapper.appendChild(modalAddTitle);
+  modalWrapper.appendChild(modalPhotoCtn);
+  modalWrapper.appendChild(modalBorder);
+  modalWrapper.appendChild(modalAddButton);
+  modalWrapper.appendChild(modalRemoveButton);
 
-    const modalAddTitle = document.createElement("h3");
-    modalAddTitle.textContent = "Galerie photo";
-    modalPhotoCtn = document.createElement("div");
-    modalPhotoCtn.classList.add("photo-ctn");
-    const modalBorder = document.createElement("div");
-    modalBorder.classList.add("border");
-    let modalAddButton = document.createElement("button");
-    modalAddButton.classList.add("addButton");
-    modalAddButton.textContent = "Ajouter une photo";
-    const modalRemoveButton = document.createElement("button");
-    modalRemoveButton.classList.add("removeButton");
-    modalRemoveButton.textContent = "Supprimer la galerie";
+  modalAddButton = document.querySelector(".addButton");
+  modalAddButton.addEventListener("click", createAddModal) 
 
-    modalWrapper.appendChild(cross);
-    modalWrapper.appendChild(modalAddTitle);
-    modalWrapper.appendChild(modalPhotoCtn);
-    modalWrapper.appendChild(modalBorder);
-    modalWrapper.appendChild(modalAddButton);
-    modalWrapper.appendChild(modalRemoveButton);
-
-    modalAddButton = document.querySelector(".addButton");
-    modalAddButton.addEventListener("click", createAddModal) 
-
-    galleryInModal();
-  }
+  galleryInModal();
 }
 
 function galleryInModal(){
-  // Ajouter les "works" dans la galerie du modal
+  // Ajouter les "works" dans la galerie du modal pour les supprimer
   for (let i = 0; i < worksData.length; i++) {
     modalPhoto = document.createElement("div");
     modalPhoto.classList.add("modal-photo");
@@ -206,18 +211,30 @@ function galleryInModal(){
 
     const modalUpDownLeftRightIcon = document.createElement("i"); // Nouvel élément pour l'icône up-down-left-right
     modalUpDownLeftRightIcon.classList.add("modal-up-down-left-right-icon"); // Ajoutez une classe pour styliser l'icône
-    modalUpDownLeftRightIcon.classList.add("fa-solid", "fa-up-down-left-right"); // Ajoutez des classes supplémentaires pour utiliser une icône de la bibliothèque Font Awesome
+    modalUpDownLeftRightIcon.classList.add("fa-solid", "fa-up-down-left-right");
+    modalUpDownLeftRightIcon.setAttribute('style', 'display:none');
+
+     // ajout de l'evenement pour apparaitre ou non l'icon de deplacement des works
+    modalPhotoImage.addEventListener("mouseenter", () => {
+      modalUpDownLeftRightIcon.setAttribute('style', 'display:flex'); 
+    });
+    modalPhotoImage.addEventListener("mouseleave", () => {
+      modalUpDownLeftRightIcon.setAttribute('style', 'display:none'); 
+    });
+      
+      
 
     const modalPhotoTitle = document.createElement("h4");
     modalPhotoTitle.textContent = worksData[i].title;
     modalPhotoTitle.classList.add("modal-title");
 
     modalPhoto.appendChild(modalPhotoImage);
-    modalPhoto.appendChild(modalTrashIcon); // Ajoutez l'icône de corbeille après l'image
-    modalPhoto.appendChild(modalUpDownLeftRightIcon); // Ajoutez l'icône up-down-left-right après l'icône de corbeille
+    modalPhoto.appendChild(modalTrashIcon); 
+    modalPhoto.appendChild(modalUpDownLeftRightIcon); 
     modalPhoto.appendChild(modalPhotoTitle);
     modalPhotoCtn.appendChild(modalPhoto);
-    // Lorsque l'on appuie sur le bouton "modifier", on affiche le modal
+    
+    /* Ajout l'evenement permettant la suppression sur un works */
     modalTrashIcon.addEventListener("click", function(){
       deleteModale(worksData[i].id);
       createModal();
@@ -225,15 +242,16 @@ function galleryInModal(){
       event.preventDefault();
     })
   }
-  galleryAdded = true;
 }
 
+/* Fonction qui affiche ou masque le modal */
 function afficherModal(){
+  // si le modale est là, on ajoute la class permettant de le rendre invisible
   if (isModalDisplay){
     const modalVisibility = document.getElementById('modalId');
     modalVisibility.classList.add("modalInvisibility");
     isModalDisplay = false
-    galleryAdded = false
+    // si le modale n'est pas là, on enlève la class permettant de le rendre invisible
   } else {
     const modalVisibility = document.getElementById('modalId');
     modalVisibility.classList.remove("modalInvisibility");
@@ -242,35 +260,29 @@ function afficherModal(){
   
 }
 
+/* fonction permettant la suppression d'une image dans le modal */
 async function deleteModale(id) {  
   token = JSON.parse(sessionStorage.getItem("token"));
   const response = await fetch(`http://localhost:5678/api/works/${id}`, {
       method: "DELETE",
       headers: {
-        "Accept": "*/*",
-        "Authorization": `Bearer ${token.token}`
+        "Accept": "*/*", // accepte tout type de reponse
+        "Authorization": `Bearer ${token.token}` // Vérification si le token de l'utilisateur connecté à le droit de faire la suppression d'après l'API
       }
   })
+  //Si la suppression est réussi
   if (response.ok) {
     // Supprimer l'image du DOM
     modalPhotoCtn.removeChild(modalPhoto);
-    // Mettre à jour les données côté serveur
-    const deleteResponse = await fetch(`http://localhost:5678/api/works/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Authorization": `Bearer ${token.token}`
-      }
-    })
-    if (deleteResponse.ok) {
-      console.log("Image supprimée avec succès");
-    } else {
-      console.log("Erreur lors de la suppression de l'image côté serveur");
-    }
-    // Mettre à jour les données affichées
-    worksData = await loadWorks();
+    console.log("Image supprimée avec succès");
+  } else {
+    console.log("Erreur lors de la suppression de l'image côté serveur");
   }
+  // Mettre à jour les données affichées
+  worksData = await loadWorks();
 }
-  
+
+/* fonction affichant du modal permettant d'ajouter des works */   
 function createAddModal(){
   
   modalWrapper.innerHTML = ""; // Effacer le contenu du wrapper
@@ -321,6 +333,7 @@ function createAddModal(){
   border.classList.add("border");
   formSubmitButton = document.createElement("input");
   formSubmitButton.classList.add("formSubmitButton");
+  formSubmitButton.classList.add("buttonDisable");
   formSubmitButton.type = "submit";
   formSubmitButton.value = "Valider";
   formSubmitButton.disabled = true;
@@ -356,7 +369,7 @@ function createAddModal(){
     }
   });
 
-  // On écoute les événements de modification des champs
+  // On écoute les événements de modification des champs pour activer ou non le bouton "valider"
   inputFileBtn.addEventListener("change", validateForm);
   inputTitle.addEventListener("input", validateForm);
   selectCategory.addEventListener("change", validateForm);
@@ -368,6 +381,7 @@ function createAddModal(){
 
 }
 
+/*fonction permettant d'afficher le premier modal */ 
 function displayDefaultModal() {
   isModalDisplay=true;
   afficherModal();
@@ -376,31 +390,33 @@ function displayDefaultModal() {
   afficherModal()
 }
 
-// Validation du formulaire
+// foncion de validation du formulaire
 function validateForm() {
   // On vérifie si les champs sont remplis
   if ( inputFileBtn.value !== "" && inputTitle.value !== "" && selectCategory.value !== "0" ) {
     formSubmitButton.disabled = false; // On active le bouton "submit"
-    formSubmitButton.classList.add("sendForm");
-    // On écoute l'envoi du nouveau projet
+    formSubmitButton.classList.add("buttonEnable");
+    formSubmitButton.classList.remove("buttonDisable");
+
     formSubmitButton.addEventListener("click", (e) => {
       postNewWork(inputFileBtn, inputTitle, selectCategory);
       e.preventDefault();
     });
   } else {
-    formSubmitButton.classList.remove("sendForm");
+    formSubmitButton.classList.add("buttonDisable");
+    formSubmitButton.classList.remove("buttonEnable");
     formSubmitButton.disabled = true; // On désactive le bouton "submit"
   }
 }
 
-// On importe le tableau des catégories
+// On récupère les catégories via l'API
 async function loadCategories() {
   const response = await fetch("http://localhost:5678/api/categories");
   const categories = await response.json();
   return categories;
 }
 
-// On insère les catégories dans le sélecteur
+// On insère les catégories dans le sélecteur du modal d'ajout
 async function insertCategories(selectCategory) {
   const categories = await loadCategories();
   categories.unshift({ id: 0, name: "Choisissez une catégorie :" });
@@ -412,7 +428,7 @@ async function insertCategories(selectCategory) {
   }
 }
 
-// On envoie le nouveau projet
+// On envoie le nouveau works
 async function postNewWork(inputFileBtn, inputTitle, selectCategory) {
   const formData = new FormData();
   const newWorkImg = inputFileBtn.files[0];

@@ -224,7 +224,6 @@ input[type="submit"]{
 	font-family: 'Syne';
 	font-weight: 700;
 	color: white;
-	background-color: #1D6154;
 	margin : 2em auto ;
 	width: 180px;
 	text-align: center;
@@ -234,6 +233,14 @@ input[type="submit"]{
 	align-items: center;
 	justify-content: center;
 	height: 36px;
+}
+
+.buttonEnable {
+	background-color: #1D6154;
+}
+
+.buttonDisable {
+	background-color: #989a9a;
 }
 
 footer nav ul {

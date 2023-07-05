@@ -1,9 +1,10 @@
 /* initialisation des variables "globales" pouvant être utiliser dans tous le code */
 let categoriesData, modalPhotoCtn, modalPhoto, inputFileBtn, formSubmitButton, inputTitle, selectCategory, modalWrapper;
 let worksData;
-let isModalDisplay = false; //Booleen permettant de gérer l'affichage sur la page du modal (true = affiché, false = caché)
+let isModalDisplay; //Booleen permettant de gérer l'affichage sur la page du modal (true = affiché, false = caché)
 
 async function init(){
+  isModalDisplay = false;
   /* Au lancement de la page : Récupération des works et des categories de l'API */
   const responseWorks = fetch('http://localhost:5678/api/works');
   responseWorks.then(reponse => {
@@ -13,6 +14,15 @@ async function init(){
     worksData = json
     afficherGallery(worksData)
     createModal() //Création du HTML du modal de base (non affiché)
+    // permet la disparition du modal lors d'un clique a l'exterieur de celui-ci
+    document.addEventListener('click', (event) => {
+//            
+      if (event.target.closest(".modal") && isModalDisplay == true && !event.target.closest(".modal-wrapper")) {
+
+        afficherModal();
+      }
+      
+    });
   })
   const responseCategories = fetch('http://localhost:5678/api/categories');
   responseCategories.then(reponse => {
@@ -22,6 +32,7 @@ async function init(){
     categoriesData = json;
     filters(categoriesData) //Affichage des boutons pour filtrer les works
   })
+  
 }
 
 init()
@@ -66,6 +77,7 @@ function afficherGallery(data) {
     figure.appendChild(nomElement);
     gallery.appendChild(figure);
   }
+ 
 }
 
 /* Fonction qui affiche les filtres */
@@ -195,7 +207,9 @@ function createModal() {
   modalAddButton.addEventListener("click", createAddModal) 
 
   galleryInModal();
+
 }
+
 
 function galleryInModal(){
   // Ajouter les "works" dans la galerie du modal pour les supprimer

@@ -72,7 +72,7 @@ function afficherGallery(data) {
 function filters(category) {
   category.unshift({ name: "Tous" });
 
-  const filterBtn = document.querySelector(".filtersBtn");
+  let filterBtn = document.querySelector(".filtersBtn");
   filterBtn.innerHTML = ''; // Effacer le contenu existant des filtres
 
   for (let i = 0; i < category.length; i++) {
@@ -124,6 +124,9 @@ function checkConnection() {
   if (token) {
     // Connecté
     console.log("Connecté");
+
+    let filterBtn = document.querySelector(".filtersBtn");
+    filterBtn.style.display = "none";
 
     // Appeler les fonctions ou effectuer les actions appropriées pour l'utilisateur connecté
 

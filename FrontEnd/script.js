@@ -256,7 +256,6 @@ function galleryInModal(){
       deleteModale(worksData[i].id);
       createModal();
       afficherModal();
-      event.preventDefault();
     })
   }
 }
@@ -316,6 +315,7 @@ function createAddModal(){
 
   const addForm = document.createElement("form");
   addForm.classList.add("addForm");
+  addForm.setAttribute("id","formulaire");
   const addBox = document.createElement("div");
   addBox.classList.add("addBox");
   const iconeImg = document.createElement("i");
@@ -348,11 +348,11 @@ function createAddModal(){
 
   const border = document.createElement("div");
   border.classList.add("border");
-  formSubmitButton = document.createElement("input");
+  formSubmitButton = document.createElement("button");
+  formSubmitButton.setAttribute("type","submit")
   formSubmitButton.classList.add("formSubmitButton");
   formSubmitButton.classList.add("buttonDisable");
-  formSubmitButton.type = "submit";
-  formSubmitButton.value = "Valider";
+  formSubmitButton.innerHTML = "Valider"
   formSubmitButton.disabled = true;
 
   addForm.appendChild(addBox);
@@ -414,10 +414,11 @@ function validateForm() {
     formSubmitButton.disabled = false; // On active le bouton "submit"
     formSubmitButton.classList.add("buttonEnable");
     formSubmitButton.classList.remove("buttonDisable");
-
-    formSubmitButton.addEventListener("click", (e) => {
-      postNewWork(inputFileBtn, inputTitle, selectCategory);
+    const formulaire = document.getElementById('formulaire')
+    formulaire.addEventListener("submit", (e) => {  
+      console.log("envoie formulaire")
       e.preventDefault();
+      postNewWork(inputFileBtn, inputTitle, selectCategory);
     });
   } else {
     formSubmitButton.classList.add("buttonDisable");
